@@ -1,0 +1,55 @@
+//在third_party下加入新文件夹
+//创建BUILD.gn
+//创建.c文件 such as 01.c 
+//自身静态库
+import("//build/lite/config/component/lite_component.gni")
+import("//build/lite/ndk/ndk.gni")
+#配置头文件路径
+config("a_myparty_config"){
+  include_dirs = [
+    "."
+  ]
+
+#配置需要编译的源代码
+a_myparty_sources = [
+    "01.c",
+]
+#静态链接
+lite_library("a_myparty_static"){
+  target_type = "static_library"
+  sources = a_myparty_Sources
+  public_configs = [":a_myparty_config"]
+}
+#动态加载
+lite_library("a_myparty_shared"){
+  target_type = "static_library"
+  sources = a_myparty_Sources
+  public_configs = [":a_myparty_config"]
+}
+#入口 选择静态or动态
+ndk_lib("a_myparty_ndk"){
+  if(kernel_typr != "liteos_m"){
+      lib_extension = ".so"
+      deps = [
+          ":a_myparty_static"
+      ]
+  }else{
+      deps = [
+          ":a_myparty_static"
+      ]
+  }
+head_files = [
+      "//third_party/a_myparty"
+]
+}
+}
+
+
+/#
+static_library("my_first_party_static")//自身文件静态库名{ 
+  sources = [
+    "01.c"
+]
+}
+#/
+

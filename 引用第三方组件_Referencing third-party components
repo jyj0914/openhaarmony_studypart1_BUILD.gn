@@ -1,0 +1,27 @@
+//该BUILD.gn 跟随在项目文件夹下
+
+static_library("my_app")//静态库，名字跟随自己取的文件夹{
+//源代码
+sources=[
+  "hello_world.c"//根据自己取的源代码名字输入
+]
+//头文件路径
+  include_dirs = [
+  "//base/iot_hardware/peripheral/interfaces/kits",
+]
+
+deps = [
+    "//whird_party/JSON-c:json-c_Static",
+]
+
+//声明
+SYS_RUN(my_app);//跟随文件夹}
+
+//以下在app层下
+import("//build/lite/config/component/lite_component.gni")
+lite_component("app"){
+  fratures=[
+    "my_frist_app:my_app",//项目文件夹名：静态库名
+  ]
+  
+}
